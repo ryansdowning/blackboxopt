@@ -3,6 +3,13 @@ from typing import Any, Callable, Dict, Iterable, Optional
 
 import numpy as np
 
+rng = np.random.default_rng()
+
+
+def set_global_seed(seed):
+    global rng
+    rng = np.random.default_rng(seed)
+
 
 class Space(ABC):
     @abstractmethod
@@ -20,7 +27,7 @@ class RandInt(Space):
             self.high = high
 
     def sample(self, *args, **kwargs):
-        return np.random.randint(self.low, self.high + 1)
+        return rng.integers(self.low, self.high + 1)
 
 
 class RandFloat(Space):
@@ -33,12 +40,12 @@ class RandFloat(Space):
             self.high = high
 
     def sample(self, *args, **kwargs):
-        return np.random.uniform(self.low, self.high)
+        return rng.uniform(self.low, self.high)
 
 
 class RandUniform(RandFloat):
     def sample(self, *args, **kwargs):
-        return np.random.uniform(self.low, self.how)
+        return rng.uniform(self.low, self.high)
 
 
 class RandLogUniform(RandUniform):
@@ -55,7 +62,7 @@ class Discrete(Space):
         self.choices = list(choices)
 
     def sample(self, *args, **kwargs):
-        return np.random.choice(self.choices)
+        return rng.choice(self.choices)
 
 
 class Conditional(Space):
@@ -63,7 +70,7 @@ class Conditional(Space):
         self.func = func
 
     def sample(self, assignments, *args, **kwargs):
-        return func(assignments)
+        return self.func(assignments)
 
 
 SearchSpace = Dict[str, Space]

@@ -1,6 +1,5 @@
 import inspect
-from abc import ABC, abstractmethod
-from typing import Any, Callable, Dict, Tuple, Union
+from typing import Any, Callable, Dict, Tuple
 
 from blackboxopt.space import SearchSpace
 
@@ -15,6 +14,6 @@ def handle_base_params(
         return lambda *args, **kwargs: -func(*args, **kwargs), space
 
 
-def random_algorithm(func: Callable[..., float], space: SearchSpace, maximize: bool = True):
+def random_algorithm(func: Callable[..., float], space: SearchSpace, maximize: bool = True) -> Dict[str, Any]:
     func, space = handle_base_params(func, space, maximize)
     return {k: v.sample() for k, v in space.items()}

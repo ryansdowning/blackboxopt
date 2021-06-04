@@ -3,7 +3,7 @@ from typing import Any, Callable, Dict, List, Literal, Union
 
 import numpy as np
 
-from blackboxopt import space
+from blackboxopt import space as sp
 from blackboxopt.algorithms import base
 
 Phenome = namedtuple("Phenome", ['param', 'value'])  # A phenome is a single argument
@@ -18,6 +18,14 @@ class Gene:  # A gene is a list of phenomes (arguments) for a given fitness func
         self._param_dict = {phenome.param: phenome.value for phenome in self._phenomes}
         self._length = len(phenomes)
 
+    @property
+    def params_set(self):
+        return self._params_set
+
+    @property
+    def param_dict(self):
+        return self._param_dict
+
     def get_fitness(self, func: Callable[..., float]) -> float:
         return func(**self._param_dict)
 
@@ -25,7 +33,7 @@ class Gene:  # A gene is a list of phenomes (arguments) for a given fitness func
         assert 0 < k <= self._length
         assert self._params_set == other._params_set
 
-        crossover_points = np.sort(np.random.choice(np.arange(self._length + 1), k, replace=False))
+        crossover_points = np.sort(sp.rng.choice(np.arange(self._length + 1), k, replace=False))
         new_gene_values = self._values[:crossover_points[0]]
         for i, (prev_point, curr_point) in enumerate(zip(crossover_points, crossover_points[1:]), 1):
             if i % 2:
@@ -55,27 +63,22 @@ class Gene:  # A gene is a list of phenomes (arguments) for a given fitness func
 
         new_gene_values = self._values
         for i in range(self._length):
-            if np.random.random() >= weight:
+            if sp.rng.random() >= weight:
                 new_gene_values[i] = other._values[i]
 
         new_gene = Gene([Phenome(param, value) for param, value in zip(self._params, new_gene_values)])
         return new_gene
 
-    def mutate(self, space: space.SearchSpace, mutation_probability: float = 0.5):
+    def mutate(self, space: sp.SearchSpace, mutation_probability: float = 0.5):
         mutated_phenomes = self._phenomes
         for i, phenome in enumerate(self._phenomes):
-            if np.random.random() >= mutation_probability:
+            if sp.rng.random() >= mutation_probability:
                 new_phenome = Phenome(phenome.param, space[phenome.param].sample())
                 mutated_phenomes[i] = new_phenome
         return Gene(mutated_phenomes)
 
-    @property
-    def params_set(self):
-        return self._params_set
-
-    @property
-    def param_dict(self):
-        return self._param_dict
+    def __str__(self):
+        return str(self._param_dict)
 
 
 class Population:  # A population is a list of genes
@@ -112,13 +115,16 @@ class Population:  # A population is a list of genes
         fitness = fitness + fitness.min(initial=0)  # adjust to min of 0, so no gene has a negative probability
         total_fitness = fitness.sum()
         fitness_probability = fitness / total_fitness
-        select_k = np.random.choice(self.genes, k, p=fitness_probability)
+        select_k = sp.rng.choice(self.genes, k, p=fitness_probability)
         return select_k
+
+    def __str__(self):
+        return f"Population of size: {self.size} with genes: {[str(gene) for gene in self.genes]}"
 
 
 def genetic_algorithm(
         func: Callable[..., float],
-        space: space.SearchSpace,
+        space: sp.SearchSpace,
         maximize: bool = True,
         pop_size: int = 100,
         generations: int = 100,
@@ -126,7 +132,7 @@ def genetic_algorithm(
         mutation_rate: float = 1./3,
         k_crossover: int = 1,
         select_method: Union[Literal["rank"], Literal["roulette"]] = 'rank'
-):
+) -> Dict[str, Any]:
     func, space = base.handle_base_params(func, space, maximize)
     assert crossover_rate + mutation_rate <= 1
 
@@ -150,11 +156,11 @@ def genetic_algorithm(
         else:
             raise AttributeError
 
-        crossover_pairs = [np.random.choice(fit_genes, 2, replace=False) for _ in range(crossover_k)]
+        crossover_pairs = [sp.rng.choice(fit_genes, 2, replace=False) for _ in range(crossover_k)]
         crossed_genes = [gene_a.k_point_crossover(gene_b, k_crossover) for gene_a, gene_b in crossover_pairs]
-        mutating_genes = np.random.choice(fit_genes, mutate_k, replace=False)
+        mutating_genes = sp.rng.choice(fit_genes, mutate_k, replace=False)
         mutated_genes = [gene.mutate(space) for gene in mutating_genes]
-        surviving_genes = np.random.choice(fit_genes, survive_k, replace=False)
+        surviving_genes = sp.rng.choice(fit_genes, survive_k, replace=False)
 
         new_genes = crossed_genes + mutated_genes + surviving_genes.tolist()
         population.update_population(new_genes)
