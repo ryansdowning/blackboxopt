@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Iterable, Any, Dict, Callable
+from typing import Any, Callable, Dict, Iterable, Optional
+
 import numpy as np
 
 

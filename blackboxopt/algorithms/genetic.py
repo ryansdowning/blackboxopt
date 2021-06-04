@@ -1,8 +1,10 @@
-from typing import Callable, Union, Dict, Any, List, Literal
+from collections import namedtuple
+from typing import Any, Callable, Dict, List, Literal, Union
+
+import numpy as np
+
 from blackboxopt import space
 from blackboxopt.algorithms import base
-import numpy as np
-from collections import namedtuple
 
 Phenome = namedtuple("Phenome", ['param', 'value'])  # A phenome is a single argument
 
