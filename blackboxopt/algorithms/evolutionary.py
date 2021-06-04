@@ -111,11 +111,13 @@ class Population:  # A population is a list of genes
         return top_k
 
     def roulette_select(self, func: Callable[..., float], k: int) -> np.ndarray:
+        """OUTPUT GENES MUST BE SORTED IN DESCENDING ORDER LIKE RANK SELECT OR THE ELITIST SELECTION WILL FAIL"""
         fitness = np.array([gene.get_fitness(func) for gene in self.genes], dtype=float)
         fitness = fitness + fitness.min(initial=0)  # adjust to min of 0, so no gene has a negative probability
         total_fitness = fitness.sum()
         fitness_probability = fitness / total_fitness
-        select_k = sp.rng.choice(self.genes, k, p=fitness_probability)
+        select_k_idxs = sp.rng.choice(np.arange(self.size), k, p=fitness_probability)
+        select_k = np.array([self.genes[idx] for idx in np.argsort(fitness) if idx in select_k_idxs], dtype=Gene)
         return select_k
 
     def __str__(self):
@@ -128,18 +130,21 @@ def genetic_algorithm(
         maximize: bool = True,
         pop_size: int = 100,
         generations: int = 100,
+        purge_rate: float = 1./3,
         crossover_rate: float = 1./3,
         mutation_rate: float = 1./3,
+        elitist_rate: float = 0.,
         k_crossover: int = 1,
-        select_method: Union[Literal["rank"], Literal["roulette"]] = 'rank'
+        select_method: Union[Literal["rank"], Literal["roulette"]] = 'rank',
 ) -> Dict[str, Any]:
     func, space = base.handle_base_params(func, space, maximize)
-    assert crossover_rate + mutation_rate <= 1
+    assert crossover_rate + mutation_rate + elitist_rate <= 1
 
-    select_k = int(pop_size * (1 - crossover_rate))
+    select_k = int(pop_size * (1 - purge_rate))
     crossover_k = int(pop_size * crossover_rate)
     mutate_k = int(pop_size * mutation_rate)
-    survive_k = pop_size - (crossover_k + mutate_k)
+    elite_k = int(pop_size * elitist_rate)
+    survive_k = pop_size - (crossover_k + mutate_k + elite_k)
 
     ordered_params = list(space.keys())
     initial_pop = [
@@ -160,9 +165,10 @@ def genetic_algorithm(
         crossed_genes = [gene_a.k_point_crossover(gene_b, k_crossover) for gene_a, gene_b in crossover_pairs]
         mutating_genes = sp.rng.choice(fit_genes, mutate_k, replace=False)
         mutated_genes = [gene.mutate(space) for gene in mutating_genes]
+        elite_genes = fit_genes[:elite_k]
         surviving_genes = sp.rng.choice(fit_genes, survive_k, replace=False)
 
-        new_genes = crossed_genes + mutated_genes + surviving_genes.tolist()
+        new_genes = crossed_genes + mutated_genes + elite_genes.tolist() + surviving_genes.tolist()
         population.update_population(new_genes)
 
     return population.fittest_gene(func).param_dict
