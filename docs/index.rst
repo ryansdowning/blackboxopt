@@ -1,4 +1,4 @@
-Welcome to stock_sentiment's documentation!
+Welcome to blackboxopt's documentation!
 ===========================================
 
 .. toctree::
