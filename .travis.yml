@@ -27,7 +27,7 @@ jobs:
         - poetry run pytest -W ignore tests/ --cov blackboxopt/ --cov-fail-under=0
     - stage: deploy
       name: Deploy to GitHub Pages
-      if: (NOT type IN (pull_request)) AND (branch = master) # only deploy if merging on master
+      if: (NOT type IN (pull_request)) AND (branch = main) # only deploy if merging on master
       script:
         - poetry run sphinx-apidoc -e -f -o docs/ blackboxopt/ tests/
         - cd docs && poetry run make html && cd ..
