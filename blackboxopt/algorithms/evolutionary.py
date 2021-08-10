@@ -621,6 +621,18 @@ def random_restart_hill_climbing(
     steps: int = 1000,
     restart_probability: float = 0.05,
 ) -> Dict[str, Any]:
+    """
+
+    Args:
+        func:
+        sampler:
+        maximize:
+        steps:
+        restart_probability:
+
+    Returns:
+
+    """
     func, _ = base.handle_base_params(func, sampler, maximize)
 
     curr_gene = Gene([Phenome(param, val) for param, val in sampler.sample().items()])
