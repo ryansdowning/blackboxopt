@@ -26,11 +26,16 @@ jobs:
       name: Run isort and pylinting
       script:
         - poetry run isort -c blackboxopt/
-        - poetry run pylint blackboxopt/ --max-line-length=120 --ignore=tests --fail-under=7
+        - poetry run pylint blackboxopt/ --max-line-length=120 --ignore=tests --fail-under=7 --output-format=text > pylint.txt
+        - score=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' pylint.txt)
+      after_success:
+        - poetry run anybadge --value=$score --file=pylint.svg pylint
     - stage: test
       name: Run pytests
       script:
-        - poetry run pytest -W ignore tests/ --cov blackboxopt/ --cov-fail-under=0
+        - poetry run pytest -W ignore tests/ --cov blackboxopt/ --cov-report html --cov-fail-under=0
+      after_success:
+        - poetry run bash <(curl -s https://codecov.io/bash)
     - stage: deploy
       name: Deploy to GitHub Pages
       if: (NOT type IN (pull_request)) AND (branch = main) # only deploy if merging on master
