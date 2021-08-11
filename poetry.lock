@@ -7,14 +7,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "anybadge"
-version = "1.7.0"
-description = "Simple, flexible badge generator for project badges."
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "anyio"
 version = "3.3.0"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
@@ -1504,16 +1496,12 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "730bab00a2a196b34ec4b4d80e17329c3e34a03fa3c7526a6ccb59dbdc38b7d1"
+content-hash = "f6603bef21002c1109dc05aca9fc8860b46d7fea771d41447e86b5cb8bfbaef5"
 
 [metadata.files]
 alabaster = [
     {file = "alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
-]
-anybadge = [
-    {file = "anybadge-1.7.0-py2.py3-none-any.whl", hash = "sha256:91ab1cbbdc08ee2d04bcae7d061274193f04875036326c42c98bac9347a22a9d"},
-    {file = "anybadge-1.7.0.tar.gz", hash = "sha256:44f5d76926b6085cfcd1b8518a534d741bf25a0ae4a30e548fed26bf4ac8d887"},
 ]
 anyio = [
     {file = "anyio-3.3.0-py3-none-any.whl", hash = "sha256:929a6852074397afe1d989002aa96d457e3e1e5441357c60d03e7eea0e65e1b0"},
