@@ -30,7 +30,7 @@ class Space(ABC):
         """
         raise NotImplementedError
 
-    def __str__(self):
+    def __repr__(self):
         """Creates a nice string representation of the search space and its settings"""
         return f"""{self.__class__.__name__}({', '.join(f"{k}={v}" for k, v in vars(self).items())})"""
 
