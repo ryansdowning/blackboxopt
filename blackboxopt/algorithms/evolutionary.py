@@ -1,4 +1,6 @@
-"""Module"""
+"""The evolutionary module is responsible for implementing optimization algorithms with relationship to Genetics,
+genetic algorithms. Currently includes base genetic algorithm, simmulated annealing, stochastic hill climbing,
+and random restart hill climbing"""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Literal, Optional, Type, Union
