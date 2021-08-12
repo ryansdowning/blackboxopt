@@ -112,9 +112,9 @@ In [6]: def booth(x1, x2):
    ...:     return (x1 + 2*x2 - 7)**2 + (2*x1+x2-5)**2
    ...: 
 
-In [7]: best_params = evo.genetic_algorithm(booth, sampler, maximize=False)
+In [7]: best_params = evo.genetic_algorithm(booth, sampler, maximize=False, elitist_rate=0.05)
 Generation 100: 100%|██████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 500.87it/s]
 
 In [8]: best_params
-Out [8]: {'x1': 3, 'x2': 1}
+Out [8]: {'x1': 1, 'x2': 3}
 ```
