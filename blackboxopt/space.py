@@ -209,7 +209,7 @@ class SearchSpaceSampler:
                 self._conditionals[param] = sp
 
         dependency_graph = dict(
-            (param, sp.depends_on) if isinstance(sp, Conditional) else (param, set())
+            (param, sp.depends_on.copy()) if isinstance(sp, Conditional) else (param, set())
             for param, sp in self.space.items()
         )
         self.sample_order = solve_dependency_order(dependency_graph)
@@ -221,3 +221,6 @@ class SearchSpaceSampler:
         for param in self.sample_order:
             samples[param] = self.space[param].sample(assignments=samples)
         return samples
+
+    def __repr__(self):
+        return f"""{self.__class__.__name__}({{{', '.join(f"'{k}': {v}" for k, v in self.space.items())}}}"""
