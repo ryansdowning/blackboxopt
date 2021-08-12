@@ -9,6 +9,8 @@ from tqdm import tqdm, trange
 from blackboxopt import space as sp
 from blackboxopt.algorithms import base
 
+# pylint: disable=R0913
+
 
 @dataclass
 class Phenome:
@@ -22,71 +24,81 @@ class Gene:
 
     def __init__(self, phenomes: List[Phenome]):
         """
-
         Args:
-            phenomes:
+            phenomes: List of phenomes (parameter values) that form the Gene
         """
-        self._phenomes = phenomes
-        self._params = [phenome.param for phenome in self._phenomes]
+        self.phenomes = phenomes
+        self.values = [phenome.value for phenome in self.phenomes]
+        self.length = len(phenomes)
+        self._params = [phenome.param for phenome in self.phenomes]
         self._params_set = set(self._params)
-        self._values = [phenome.value for phenome in self._phenomes]
-        self._param_dict = {phenome.param: phenome.value for phenome in self._phenomes}
-        self._length = len(phenomes)
+        self._param_dict = {phenome.param: phenome.value for phenome in self.phenomes}
 
     @property
     def params_set(self):
-        """"""
+        """stores the set of parameters to speed up computation in some methods"""
         return self._params_set
 
     @property
     def param_dict(self):
-        """"""
+        """stores the dictionary of parameters to speed up computation in some methods"""
         return self._param_dict
 
     def get_fitness(self, func: Callable[..., float]) -> float:
-        """
+        """Calculates the score of the Gene given a fitness function
 
         Args:
-            func:
+            func: fitness function that takes as parameters the Gene's Phenome values to evaluate Gene's parameter score
 
         Returns:
-
+            float representing the score evaluated by the fitness function
         """
-        return func(**self._param_dict)
+        return func(**self.param_dict)
 
-    def k_point_crossover(self, other: "Gene", k: int):
-        """
+    def k_point_crossover(self, other: "Gene", k: int) -> "Gene":
+        """Performs k point crossover between the current gene and the provided gene, returning an offspring
+
+        Splits at k sequential points, returning a "zipped" Gene that results from the splits
 
         Args:
-            other:
-            k:
+            other: The other Gene to crossover with
+            k: The number of splits in the crossover
 
         Returns:
-
+           Offspring from crossover between Genes
         """
-        assert 0 < k <= self._length
-        assert self._params_set == other._params_set
+        assert 0 < k <= self.length, f"Cannot have more splits than there are Phenomes" \
+                                      f" in Gene, total Phenomes: {self.length}, got {k=}"
+        assert self.params_set == other.params_set, f"Phenomes in Genes do not match, cannot perform crossover.\n" \
+                                                      f"Got Current Phenomes: {self.params_set}\n" \
+                                                      f"And Other Phenomes: {other.params_set}"
 
+        # Choose k sorted points from the range of values
         crossover_points = np.sort(
-            sp.rng.choice(np.arange(self._length + 1), k, replace=False)
+            sp.rng.choice(np.arange(self.length + 1), k, replace=False)
         )
-        new_gene_values = self._values[: crossover_points[0]]
+        # Start with initial split
+        new_gene_values = self.values[: crossover_points[0]]
+        # For each split in the crossover, switch between Genes to select split from, and extend offspring Gene
         for i, (prev_point, curr_point) in enumerate(
             zip(crossover_points, crossover_points[1:]), 1
         ):
+            # Get split
             if i % 2:
-                phenomes = other._values[prev_point:curr_point]
+                phenomes = other.values[prev_point:curr_point]
             else:
-                phenomes = self._values[prev_point:curr_point]
+                phenomes = self.values[prev_point:curr_point]
             new_gene_values.extend(phenomes)
 
+        # Get the remaining phenomes and add to offspring
         final_crossover = crossover_points[-1]
         if k % 2:
-            remaining_phenomes = other._values[final_crossover:]
+            remaining_phenomes = other.values[final_crossover:]
         else:
-            remaining_phenomes = self._values[final_crossover:]
+            remaining_phenomes = self.values[final_crossover:]
         new_gene_values.extend(remaining_phenomes)
 
+        # Create and return new Gene
         new_gene = Gene(
             [
                 Phenome(param, value)
@@ -95,104 +107,117 @@ class Gene:
         )
         return new_gene
 
-    def single_point_crossover(self, other: "Gene"):
-        """
+    def single_point_crossover(self, other: "Gene") -> "Gene":
+        """Performs single point crossover between the current gene and the provided gene, returning an offspring
 
         Args:
-            other:
+            other: The other Gene to crossover with
 
         Returns:
-
+            Offspring from crossover between Genes
         """
         return self.k_point_crossover(other, 1)
 
-    def two_point_crossover(self, other: "Gene"):
-        """
+    def two_point_crossover(self, other: "Gene") -> "Gene":
+        """Performs single point crossover between the current gene and the provided gene, returning an offspring
 
         Args:
-            other:
+            other: The other Gene to crossover with
 
         Returns:
-
+            Offspring from crossover between Genes
         """
         return self.k_point_crossover(other, 2)
 
-    def uniform_crossover(self, other: "Gene", weight: float = 0.5):
-        """
+    def uniform_crossover(self, other: "Gene", weight: float = 0.5) -> "Gene":
+        """Performs crossover between Genes were the probability of taking the Phenome from either Gene is constant. By
+        default this is 0.5, 50%, probability of either gene, resulting in a uniform crossover
+
+        Random number, n, is generated for each Phenome and if n < weight, the offspring takes the current gene's
+        Phenome, and vice versa for n >= weight
 
         Args:
-            other:
-            weight:
+            other: The other Gene to crossover with
+            weight: The probability of taking each Phenome from the current Gene
 
         Returns:
-
+            Offspring from crossover between Genes
         """
-        assert self._params_set == other._params_set
+        assert self.params_set == other.params_set
 
-        new_gene_values = self._values
-        for i in range(self._length):
+        offspring_phenomes = self.phenomes[:]  # Store offspring phenomes, starting with current Gene's phenomes
+        for i in range(self.length):
             if sp.rng.random() >= weight:
-                new_gene_values[i] = other._values[i]
+                # Whenever the generated number is greater than the weight, replace value with the other Gene's vlaue
+                offspring_phenomes[i].value = other.phenomes[i].value
 
-        new_gene = Gene(
-            [
-                Phenome(param, value)
-                for param, value in zip(self._params, new_gene_values)
-            ]
-        )
-        return new_gene
+        # Create and return offspring gene
+        return Gene(offspring_phenomes)
 
-    def mutate(self, space: sp.SearchSpace, mutation_probability: float = 0.5):
-        """
+    def mutate(self, sampler: sp.SearchSpaceSampler, mutation_probability: float = 0.5) -> "Gene":
+        """Mutates each Phenome selected for mutation by sampling a new value for the parameter
+
+        Iterates through the Gene's Phenomes and generates n in [0, 1] where if n < mutation_probability, that Phenome's
+        parameter is resampled (mutated)
 
         Args:
-            space:
-            mutation_probability:
+            sampler: SearchSpaceSampler for resampling the Phenome's parameters
+            mutation_probability: The probability of each Phenome being mutated
 
         Returns:
-
+            A Gene constructed with the mutated Phenomes
         """
-        mutated_phenomes = self._phenomes[:]
-        assignments = self._param_dict.copy()
-        for i, phenome in enumerate(self._phenomes):
-            if sp.rng.random() >= mutation_probability:
-                assignments.pop(phenome.param)
-                new_val = space[phenome.param].sample(assignments=assignments)
-                assignments[phenome.param] = new_val
+        mutated_phenomes = self.phenomes[:]  # Store mutated phenomes, which starts as current gene's Phenomes
+        for i, phenome in enumerate(self.phenomes):
+            if sp.rng.random() < mutation_probability:
+                # When the generated number is less than the mutation probability, mutate the Phenome at curr iteration
+                new_val = sampler.resample_one(phenome.param)
                 new_phenome = Phenome(phenome.param, new_val)
                 mutated_phenomes[i] = new_phenome
+        # Create and return mutated Gene
         return Gene(mutated_phenomes)
 
-    def mutate_one(self, space: sp.SearchSpace):
-        """
+    def mutate_one(self, sampler: sp.SearchSpaceSampler) -> "Gene":
+        """Mutates a single Phenome in the Gene, chosen at random, and returns a new mutated Gene
 
         Args:
-            space:
+            sampler: SearchSpaceSampler for resampling the Phenome's parameters
 
         Returns:
-
+            A Gene constructed with the current Gene's Phenomes, where one Phenome was mutated
         """
-        mutated_phenomes = self._phenomes[:]
-        assignments = self._param_dict.copy()
-        phenome_to_mutate = sp.rng.integers(0, self._length - 1)
+        mutated_phenomes = self.phenomes[:]  # Store offspring phenomes
+        phenome_to_mutate = sp.rng.integers(0, self.length - 1)  # Generate Phenome index to mutate
         mutated_param = mutated_phenomes[phenome_to_mutate].param
-        assignments.pop(mutated_param)
-        mutated_value = space[mutated_param].sample(assignments=assignments)
+        mutated_value = sampler.resample_one(mutated_param)  # Get new parameter value
         mutated_phenomes[phenome_to_mutate] = Phenome(mutated_param, mutated_value)
+        # Return new Gene where a single phenome was mutated
         return Gene(mutated_phenomes)
 
     def __str__(self):
-        return str(self._param_dict)
+        """Creates a string from the phenome's parameter, value dictionary"""
+        return str(self.param_dict)
+
+    def __repr__(self):
+        """Creates string for rebuilding the Gene object"""
+        return f"Gene([{', '.join(repr(phenome) for phenome in self.phenomes)}])"
+
+    def __eq__(self, other):
+        """Determines if Genes are equivalent by comparing their types, parameter names, and individual Phenomes"""
+        return (
+            isinstance(other, Gene) and
+            self.params_set == other.params_set and
+            all(self.param_dict[p] == other.param_dict[p] for p in self.params_set)
+        )
 
 
 class Population:  # A population is a list of genes
-    """"""
+    """A group of Genes that represent a population of an evolutionary cycle"""
 
     def __init__(self, genes: List[Gene]):
         """
-
         Args:
-            genes:
+            genes: List of Genes that form a population
         """
         self.size = len(genes)
         assert self.size > 0
@@ -202,13 +227,12 @@ class Population:  # A population is a list of genes
         assert all(gene.params_set == self.population_params for gene in self.genes)
 
     def update_population(self, genes: List[Gene]):
-        """
+        """Updates the current population by replace the list of Genes
+
+        Performs validation on the new genes to ensure the Population is being updated rather than altered
 
         Args:
-            genes:
-
-        Returns:
-
+            genes: List of Genes representing the updated population
         """
         assert (
             len(genes) == self.size
@@ -217,14 +241,15 @@ class Population:  # A population is a list of genes
         self.genes = genes
 
     def fittest_gene(self, func: Callable[..., float]) -> Gene:
-        """
+        """Gets the fittest Gene by evaluating all Genes in the population with the provided reward function
 
         Args:
-            func:
+            func: The reward function used to evaluate the Genes' fitness, must accept the Gene's Phenomes as inputs
 
         Returns:
-
+            Gene that obtained the highest fitness
         """
+        # Theta(n) search through all Genes to find fittest
         best_gene = None
         best_fitness = float("-inf")
         for gene in self.genes:
@@ -235,30 +260,36 @@ class Population:  # A population is a list of genes
         return best_gene
 
     def rank_select(self, func: Callable[..., float], k: int) -> np.ndarray:
-        """
+        """Selects the k top Genes from the population based on their fitness value obtained from the reward function
+
+        OUTPUT GENES MUST BE SORTED IN DESCENDING ORDER LIKE RANK SELECT OR THE ELITIST SELECTION WILL FAIL
 
         Args:
-            func:
-            k:
+            func: The reward function used to evaluate the Genes' fitness, must accept the Gene's Phenomes as inputs
+            k: The number of top Genes to select
 
         Returns:
-
+            An np.ndarray of the top k Genes sorted by their evaluated fitness (descending order)
         """
+        assert k <= self.size, f"Cannot rank select {k=} Genes when the population size is {self.size}"
         fitness = np.array([gene.get_fitness(func) for gene in self.genes], dtype=float)
         top_k = np.array(self.genes, dtype=Gene)[fitness.argsort()[-k:]][::-1]
         return top_k
 
     def roulette_select(self, func: Callable[..., float], k: int) -> np.ndarray:
-        """
+        """Selects k Genes from population roulette style, in which each Gene has a probability of being chosen
+        proportional to its relative fitness score among the Gene population
+
+        OUTPUT GENES MUST BE SORTED IN DESCENDING ORDER LIKE RANK SELECT OR THE ELITIST SELECTION WILL FAIL
 
         Args:
-            func:
-            k:
+            func: The reward function used to evaluate the Genes' fitness, must accept the Gene's Phenomes as inputs
+            k: The number of Genes to select
 
         Returns:
-
+            An np.ndarray of the k selected Genes sorted by their evaluated fitness (descending order)
         """
-        """OUTPUT GENES MUST BE SORTED IN DESCENDING ORDER LIKE RANK SELECT OR THE ELITIST SELECTION WILL FAIL"""
+        assert k <= self.size, f"Cannot roulette select {k=} Genes when the population size is {self.size}"
         fitness = np.array([gene.get_fitness(func) for gene in self.genes], dtype=float)
         fitness_dict = dict(
             zip(self.genes, fitness)
@@ -267,16 +298,17 @@ class Population:  # A population is a list of genes
         total_fitness = fitness.sum()
         fitness_probability = fitness / total_fitness
         select_k = sp.rng.choice(self.genes, k, p=fitness_probability)
+        # sort output list for elitist selection
         select_k = sorted(select_k, key=lambda gene: fitness_dict[gene], reverse=True)
         return np.array(select_k)
 
     def __str__(self):
-        """
-
-        Returns:
-
-        """
+        """Brief description of the Population"""
         return f"Population of size: {self.size} with genes: {[str(gene) for gene in self.genes]}"
+
+    def __repr__(self):
+        """Creates string for rebuilding the Population object"""
+        return f"Population([{', '.join(repr(gene) for gene in self.genes)}])"
 
 
 def genetic_algorithm(
@@ -349,16 +381,16 @@ def genetic_algorithm(
         ]
         mutating_genes = sp.rng.choice(fit_genes, mutate_k, replace=False)
         mutated_genes = [
-            gene.mutate(sampler.space, mutation_probability) for gene in mutating_genes
+            gene.mutate(sampler, mutation_probability) for gene in mutating_genes
         ]
         elite_genes = fit_genes[:elite_k]
         surviving_genes = sp.rng.choice(fit_genes, survive_k, replace=False)
 
         new_genes = (
-            crossed_genes
-            + mutated_genes
-            + elite_genes.tolist()
-            + surviving_genes.tolist()
+            crossed_genes +
+            mutated_genes +
+            elite_genes.tolist() +
+            surviving_genes.tolist()
         )
         population.update_population(new_genes)
 
@@ -584,7 +616,7 @@ def simulated_annealing_algorithm(
     gene = Gene([Phenome(param, val) for param, val in sampler.sample().items()])
     energy = gene.get_fitness(func)
     for temperature in cooling_schedule:
-        new_gene = gene.mutate_one(sampler.space)
+        new_gene = gene.mutate_one(sampler)
         new_energy = new_gene.get_fitness(func)
 
         if new_energy > energy:
@@ -606,7 +638,7 @@ def stochastic_hill_climbing(
     gene = Gene([Phenome(param, val) for param, val in sampler.sample().items()])
     score = gene.get_fitness(func)
     for _ in trange(steps):
-        new_gene = gene.mutate(sampler.space)
+        new_gene = gene.mutate(sampler)
         new_score = new_gene.get_fitness(func)
         if new_score > score:
             gene = new_gene
@@ -648,7 +680,7 @@ def random_restart_hill_climbing(
                 [Phenome(param, val) for param, val in sampler.sample().items()]
             )
         else:
-            new_gene = curr_gene.mutate(sampler.space)
+            new_gene = curr_gene.mutate(sampler)
             new_score = new_gene.get_fitness(func)
             if new_score > curr_score:
                 curr_gene = new_gene
