@@ -70,10 +70,10 @@ class Gene:
            Offspring from crossover between Genes
         """
         assert 0 < k <= self.length, f"Cannot have more splits than there are Phenomes" \
-                                      f" in Gene, total Phenomes: {self.length}, got {k=}"
+                                     f" in Gene, total Phenomes: {self.length}, got {k=}"
         assert self.params_set == other.params_set, f"Phenomes in Genes do not match, cannot perform crossover.\n" \
-                                                      f"Got Current Phenomes: {self.params_set}\n" \
-                                                      f"And Other Phenomes: {other.params_set}"
+                                                    f"Got Current Phenomes: {self.params_set}\n" \
+                                                    f"And Other Phenomes: {other.params_set}"
 
         # Choose k sorted points from the range of values
         crossover_points = np.sort(
@@ -83,7 +83,7 @@ class Gene:
         new_gene_values = self.values[: crossover_points[0]]
         # For each split in the crossover, switch between Genes to select split from, and extend offspring Gene
         for i, (prev_point, curr_point) in enumerate(
-            zip(crossover_points, crossover_points[1:]), 1
+                zip(crossover_points, crossover_points[1:]), 1
         ):
             # Get split
             if i % 2:
@@ -207,9 +207,9 @@ class Gene:
     def __eq__(self, other):
         """Determines if Genes are equivalent by comparing their types, parameter names, and individual Phenomes"""
         return (
-            isinstance(other, Gene) and
-            self.params_set == other.params_set and
-            all(self.param_dict[p] == other.param_dict[p] for p in self.params_set)
+                isinstance(other, Gene) and
+                self.params_set == other.params_set and
+                all(self.param_dict[p] == other.param_dict[p] for p in self.params_set)
         )
 
 
@@ -237,7 +237,7 @@ class Population:  # A population is a list of genes
             genes: List of Genes representing the updated population
         """
         assert (
-            len(genes) == self.size
+                len(genes) == self.size
         ), f"The new population size does not match the old. Got {len(genes)} genes, but expected {self.size}"
         assert all(gene.params_set == self.population_params for gene in genes)
         self.genes = genes
@@ -314,19 +314,19 @@ class Population:  # A population is a list of genes
 
 
 def genetic_algorithm(
-    func: Callable[..., float],
-    sampler: sp.SearchSpaceSampler,
-    maximize: bool = True,
-    pop_size: int = 100,
-    generations: int = 100,
-    purge_rate: float = 1.0 / 3,
-    crossover_rate: float = 1.0 / 3,
-    mutation_rate: float = 1.0 / 3,
-    mutation_probability: float = 0.5,
-    elitist_rate: float = 0.0,
-    k_crossover: int = 1,
-    select_method: Union[Literal["rank"], Literal["roulette"]] = "rank",
-    progress: bool = True,
+        func: Callable[..., float],
+        sampler: sp.SearchSpaceSampler,
+        maximize: bool = True,
+        pop_size: int = 100,
+        generations: int = 100,
+        purge_rate: float = 1.0 / 3,
+        crossover_rate: float = 1.0 / 3,
+        mutation_rate: float = 1.0 / 3,
+        mutation_probability: float = 0.5,
+        elitist_rate: float = 0.0,
+        k_crossover: int = 1,
+        select_method: Union[Literal["rank"], Literal["roulette"]] = "rank",
+        progress: bool = True,
 ) -> Dict[str, Any]:
     """Performs general genetic algorithm to optimize the parameters of a provided blackbox function with many options
     for adjusting the algorithm's selection and mutation methods
@@ -371,7 +371,7 @@ def genetic_algorithm(
 
     # For each generation, run the population updating rules based on the inputs specified
     for generation in (
-        pbar := tqdm(range(1, generations + 1), disable=not progress, total=generations)
+            pbar := tqdm(range(1, generations + 1), disable=not progress, total=generations)
     ):
         pbar.set_description(f"Generation {generation}")
         # Select <select_k> Genes using the appropriate selection method
@@ -404,10 +404,10 @@ def genetic_algorithm(
 
         # Compile single list of Genes and update the population
         new_genes = (
-            crossed_genes +
-            mutated_genes +
-            elite_genes.tolist() +
-            surviving_genes.tolist()
+                crossed_genes +
+                mutated_genes +
+                elite_genes.tolist() +
+                surviving_genes.tolist()
         )
         population.update_population(new_genes)
 
@@ -492,7 +492,7 @@ class MultiplicativeCoolingSchedule(CoolingSchedule, ABC):
     """Base class for a Multiplicative cooling schedule"""
 
     def __init__(
-        self, initial_temperature: float, steps: int, alpha: Optional[float] = None
+            self, initial_temperature: float, steps: int, alpha: Optional[float] = None
     ):
         """
         Args:
@@ -514,7 +514,7 @@ class MultiplicativeCoolingSchedule(CoolingSchedule, ABC):
 
 class ExponentialMultiplicativeCoolingSchedule(MultiplicativeCoolingSchedule):
     """Implements the Exponential Multiplicative cooling schedule"""
-    
+
     @staticmethod
     def handle_alpha(alpha: Optional[float]) -> float:
         """Sets the default alpha for Exponential Multiplicative cooling to 0.85"""
@@ -526,7 +526,7 @@ class ExponentialMultiplicativeCoolingSchedule(MultiplicativeCoolingSchedule):
         """Computes a step in the Exponential Multiplicative cooling schedule by calculating:
 
         .. math::
-            T_k = T_0 * \alpha^k
+            T_k = T_0 * \\alpha^k
 
         Returns:
             Float representing the temperature at the next step
@@ -552,7 +552,7 @@ class LogMultiplicativeCoolingSchedule(MultiplicativeCoolingSchedule):
         """Computes a step in the Logarithmic Multiplicative cooling schedule by calculating:
 
         .. math::
-            T_k = \frac{T_0}{1 +\alpha\log(1+k)}
+            T_k = \\frac{T_0}{1 +\\alpha\\log(1+k)}
 
         Returns:
             Float representing the temperature at the next step
@@ -560,7 +560,7 @@ class LogMultiplicativeCoolingSchedule(MultiplicativeCoolingSchedule):
         if self.step_count >= self.steps:
             raise ValueError("Attempted to step past the max steps set by the instance")
         self.temperature = self.initial_temperature / (
-            1 + self.alpha * np.log(1 + self.step_count)
+                1 + self.alpha * np.log(1 + self.step_count)
         )
         self.step_count += 1
         return self.temperature
@@ -580,7 +580,7 @@ class LinearMultiplicativeCoolingSchedule(MultiplicativeCoolingSchedule):
         """Computes a step in the Linear Multiplicative cooling schedule by calculating:
 
         .. math::
-            T_k = \frac{T_0}{1 +\alpha * k}
+            T_k = \\frac{T_0}{1 +\\alpha * k}
 
         Returns:
             Float representing the temperature at the next step
@@ -606,7 +606,7 @@ class QuadraticMultiplicativeCoolingSchedule(MultiplicativeCoolingSchedule):
         """Computes a step in the Quadratic Multiplicative cooling schedule by calculating:
 
         .. math::
-            T_k = \frac{T_0}{1 +\alpha * k^2}
+            T_k = \\frac{T_0}{1 +\\alpha * k^2}
 
         Returns:
             Float representing the temperature at the next step
@@ -614,7 +614,7 @@ class QuadraticMultiplicativeCoolingSchedule(MultiplicativeCoolingSchedule):
         if self.step_count >= self.steps:
             raise ValueError("Attempted to step past the max steps set by the instance")
         self.temperature = self.initial_temperature / (
-            1 + self.alpha * (self.step_count ** 2)
+                1 + self.alpha * (self.step_count ** 2)
         )
         return self.temperature
 
@@ -635,7 +635,7 @@ def kirkpatrick_acceptance(old_energy: float, new_energy: float, temperature: fl
     probability is computed such that:
 
     .. math::
-        p = \exp(-(E_old - E_new) / t)
+        p = \\exp(-(E_old - E_new) / t)
 
     Args:
         old_energy: Float representing the energy in the current state
@@ -653,14 +653,14 @@ def kirkpatrick_acceptance(old_energy: float, new_energy: float, temperature: fl
 
 
 def simulated_annealing_algorithm(
-    func: Callable[..., float],
-    sampler: sp.SearchSpaceSampler,
-    maximize: bool = True,
-    initial_temperature: float = 100.0,
-    steps: int = 1000,
-    cooling_schedule: str = "linear",
-    acceptance_probability_func: Callable[[float, float, float], float] = kirkpatrick_acceptance,
-    **cooling_schedule_kwargs,
+        func: Callable[..., float],
+        sampler: sp.SearchSpaceSampler,
+        maximize: bool = True,
+        initial_temperature: float = 100.0,
+        steps: int = 1000,
+        cooling_schedule: str = "linear",
+        acceptance_probability_func: Callable[[float, float, float], float] = kirkpatrick_acceptance,
+        **cooling_schedule_kwargs,
 ) -> Dict[str, Any]:
     """Implements the simulated annealing algorithm for optimizing the function parameters of a given search space
 
@@ -703,10 +703,10 @@ def simulated_annealing_algorithm(
 
 
 def stochastic_hill_climbing(
-    func: Callable[..., float],
-    sampler: sp.SearchSpaceSampler,
-    maximize: bool = True,
-    steps: int = 1000,
+        func: Callable[..., float],
+        sampler: sp.SearchSpaceSampler,
+        maximize: bool = True,
+        steps: int = 1000,
 ) -> Dict[str, Any]:
     """Implements stochastic hill climbing algorithm for optimizing the function parameters of a given search space
 
@@ -735,11 +735,11 @@ def stochastic_hill_climbing(
 
 
 def random_restart_hill_climbing(
-    func: Callable[..., float],
-    sampler: sp.SearchSpace,
-    maximize: bool = True,
-    steps: int = 1000,
-    restart_probability: float = 0.05,
+        func: Callable[..., float],
+        sampler: sp.SearchSpace,
+        maximize: bool = True,
+        steps: int = 1000,
+        restart_probability: float = 0.05,
 ) -> Dict[str, Any]:
     """Implements random restart hill climbing which is similar to stochastic hill climbing, except there is some random
     probability, `restart_probability`, that the stochastic process will restart on each iteration. This helps avoid
