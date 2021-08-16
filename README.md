@@ -20,12 +20,13 @@ framework, as well as a list of packages and how they go about satisfying those 
 |Library|Abstract Function Input|Easy Search Space API|Conditional Search Spaces|Multiple Algorithms|
 |-------|:----------------:|:---------:|:---------:|:---------:|
 |[BlackBoxOpt](https://ryansdowning.github.io/blackboxopt/)|✅|✅|✅|✅|
-|[Ray[Tune]](https://docs.ray.io/en/master/tune/index.html)|✅|✅|✅|⚠️<sup>[1]</sup>|
+|[Ray\[Tune\]](https://docs.ray.io/en/master/tune/index.html)|✅|✅|✅|⚠️<sup>[1]</sup>|
 |[Optuna](https://optuna.org/)|✅|✅|❌|⚠️<sup>[2]</sup>|
 |[Hyperopt](https://github.com/hyperopt/hyperopt)|✅|⚠️<sup>[3]</sup>|⚠️<sup>[4]</sup>|⚠️<sup>[5]</sup>|
 |[Bayesian Optimization](https://github.com/fmfn/BayesianOptimization)|✅|❌|❌|❌|
 |[Scikit-Optimize](https://scikit-optimize.github.io/stable/)|✅|❌|❌|✅|
 |[Facebook Ax](https://github.com/facebook/Ax) <sup>[6]</sup>|✅|❌|❌|❌|
+
 [1] - Ray[Tune] implements many optimization algorithms, but fails to support them properly so when you introduce 
 conditional search spaces you may only use random sampling.
 
@@ -39,11 +40,11 @@ difficult to use.
 time. It forms paths in the constructed search "tree" instead of attaching relationships directly between parameters.
 
 [5] - Similar to Optuna, Hyperopt supports TPE and Adaptive TPE, not sufficient to satisfy the "Multiple Algorithms"
-category
+category.
 
 [6] - Facebook's Ax tool requires `botorch` as well as some other heavy dependencies such as `sklearn` and `plotly`, 
-highlighting another issue with these conglomerate libraries in which they slap technologies on top of each other 
-without making them work together properly.
+highlighting another issue with these conglomerate libraries in which they often pull small functionality from multiple
+large packages, creating massive dependencies for otherwise simple features.
 
 ## Example Usage
 

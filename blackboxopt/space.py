@@ -5,7 +5,7 @@ from typing import Any, Callable, Dict, Iterable, Optional, Set, Tuple, TypeVar
 
 import numpy as np
 
-# pylint: disable=C0103, R0903
+# pylint: disable=R0903, C0103, W0603
 rng = np.random.default_rng()
 
 
@@ -213,14 +213,35 @@ class SearchSpaceSampler:
             for param, sp in self.space.items()
         )
         self.sample_order = solve_dependency_order(dependency_graph)
+        self.curr_sample = {param: None for param in self.sample_order}
 
     def sample(self) -> Dict[str, Any]:
         """Generates a sample of all parameters in the Sampler, returning a dictionary where the keys are the parameters
         names and the values are the value of each parameter for the generated sample"""
         samples = dict()
         for param in self.sample_order:
-            samples[param] = self.space[param].sample(assignments=samples)
+            samp = self.space[param].sample(assignments=samples)
+            samples[param] = samp
+            self.curr_sample[param] = samp
         return samples
 
+    def resample_one(self, param):
+        """Uses the cached sample (most recent sample) to generate a new sample value for a single parameter in the
+        search space
+
+        Args:
+            param: Name of parameter to resample for
+
+        Returns:
+            Resampled value for the given parameter
+        """
+        assert param in self.space, f"Parameter: {param} is not part of this SearchSpaceSampler " \
+                                    f"with parameters: {self.sample_order}"
+        self.curr_sample.pop(param)
+        samp = self.space[param].sample(assignments=self.curr_sample)
+        self.curr_sample[param] = samp
+        return samp
+
     def __repr__(self):
+        """Creates string for rebuilding the SearchSpaceSampler object"""
         return f"""{self.__class__.__name__}({{{', '.join(f"'{k}': {v}" for k, v in self.space.items())}}}"""
