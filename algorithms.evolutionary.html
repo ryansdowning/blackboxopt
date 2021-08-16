@@ -1,0 +1,682 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>algorithms.evolutionary module &#8212; blackboxopt 0.0.5 documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="index.html">
+<p class="title">blackboxopt</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="algorithms.base.html">
+   algorithms.base module
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   algorithms.evolutionary module
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="module-algorithms.evolutionary">
+<span id="algorithms-evolutionary-module"></span><h1>algorithms.evolutionary module<a class="headerlink" href="#module-algorithms.evolutionary" title="Permalink to this headline">¶</a></h1>
+<p>The evolutionary module is responsible for implementing optimization algorithms with relationship to Genetics,
+genetic algorithms. Currently includes base genetic algorithm, simmulated annealing, stochastic hill climbing,
+and random restart hill climbing</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.CoolingSchedule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">CoolingSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.CoolingSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Implements iterable class for temperature cooling schedule under the simulated annealing algorithm</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.CoolingSchedule.step">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.CoolingSchedule.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required method for updating the temperature using the Cooling Schedule’s algorithm such that the next step’s
+temperature value is computed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Float representing the temperature in the next step of the cooling schedule</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.ExponentialMultiplicativeCoolingSchedule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">ExponentialMultiplicativeCoolingSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.ExponentialMultiplicativeCoolingSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#algorithms.evolutionary.MultiplicativeCoolingSchedule" title="algorithms.evolutionary.MultiplicativeCoolingSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">algorithms.evolutionary.MultiplicativeCoolingSchedule</span></code></a></p>
+<p>Implements the Exponential Multiplicative cooling schedule</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.ExponentialMultiplicativeCoolingSchedule.handle_alpha">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handle_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.ExponentialMultiplicativeCoolingSchedule.handle_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the default alpha for Exponential Multiplicative cooling to 0.85</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.ExponentialMultiplicativeCoolingSchedule.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.ExponentialMultiplicativeCoolingSchedule.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a step in the Exponential Multiplicative cooling schedule by calculating:</p>
+<div class="math notranslate nohighlight">
+\[T_k = T_0 * \alpha^k\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Float representing the temperature at the next step</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">Gene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phenomes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#algorithms.evolutionary.Phenome" title="algorithms.evolutionary.Phenome"><span class="pre">algorithms.evolutionary.Phenome</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.Gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A gene is a list of phenomes (arguments) for a given fitness function</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.get_fitness">
+<span class="sig-name descname"><span class="pre">get_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.get_fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the score of the Gene given a fitness function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – fitness function that takes as parameters the Gene’s Phenome values to evaluate Gene’s parameter score</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>float representing the score evaluated by the fitness function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.k_point_crossover">
+<span class="sig-name descname"><span class="pre">k_point_crossover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.k_point_crossover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs k point crossover between the current gene and the provided gene, returning an offspring</p>
+<p>Splits at k sequential points, returning a “zipped” Gene that results from the splits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> – The other Gene to crossover with</p></li>
+<li><p><strong>k</strong> – The number of splits in the crossover</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Offspring from crossover between Genes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.mutate">
+<span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampler</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">blackboxopt.space.SearchSpaceSampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_probability</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.mutate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mutates each Phenome selected for mutation by sampling a new value for the parameter</p>
+<p>Iterates through the Gene’s Phenomes and generates n in [0, 1] where if n &lt; mutation_probability, that Phenome’s
+parameter is resampled (mutated)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sampler</strong> – SearchSpaceSampler for resampling the Phenome’s parameters</p></li>
+<li><p><strong>mutation_probability</strong> – The probability of each Phenome being mutated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Gene constructed with the mutated Phenomes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.mutate_one">
+<span class="sig-name descname"><span class="pre">mutate_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampler</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">blackboxopt.space.SearchSpaceSampler</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.mutate_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mutates a single Phenome in the Gene, chosen at random, and returns a new mutated Gene</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sampler</strong> – SearchSpaceSampler for resampling the Phenome’s parameters</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Gene constructed with the current Gene’s Phenomes, where one Phenome was mutated</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.param_dict">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">param_dict</span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.param_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>stores the dictionary of parameters to speed up computation in some methods</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.params_set">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params_set</span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.params_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>stores the set of parameters to speed up computation in some methods</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.single_point_crossover">
+<span class="sig-name descname"><span class="pre">single_point_crossover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.single_point_crossover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs single point crossover between the current gene and the provided gene, returning an offspring</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> – The other Gene to crossover with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Offspring from crossover between Genes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.two_point_crossover">
+<span class="sig-name descname"><span class="pre">two_point_crossover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.two_point_crossover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs single point crossover between the current gene and the provided gene, returning an offspring</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> – The other Gene to crossover with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Offspring from crossover between Genes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Gene.uniform_crossover">
+<span class="sig-name descname"><span class="pre">uniform_crossover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></span><a class="headerlink" href="#algorithms.evolutionary.Gene.uniform_crossover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs crossover between Genes were the probability of taking the Phenome from either Gene is constant. By
+default this is 0.5, 50%, probability of either gene, resulting in a uniform crossover</p>
+<p>Random number, n, is generated for each Phenome and if n &lt; weight, the offspring takes the current gene’s
+Phenome, and vice versa for n &gt;= weight</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> – The other Gene to crossover with</p></li>
+<li><p><strong>weight</strong> – The probability of taking each Phenome from the current Gene</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Offspring from crossover between Genes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LinearCoolingSchedule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">LinearCoolingSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.LinearCoolingSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#algorithms.evolutionary.CoolingSchedule" title="algorithms.evolutionary.CoolingSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">algorithms.evolutionary.CoolingSchedule</span></code></a></p>
+<p>Linear Cooling Schedule in which the temperature drops by a constant value at each step until reaching 0 on
+the final step</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LinearCoolingSchedule.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.LinearCoolingSchedule.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a step in the linear cooling schedule by decreasing the temperature by the decay rate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Float representing the temperature at the next step</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LinearMultiplicativeCoolingSchedule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">LinearMultiplicativeCoolingSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.LinearMultiplicativeCoolingSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#algorithms.evolutionary.MultiplicativeCoolingSchedule" title="algorithms.evolutionary.MultiplicativeCoolingSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">algorithms.evolutionary.MultiplicativeCoolingSchedule</span></code></a></p>
+<p>Implements the Linear Multiplicative cooling schedule</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LinearMultiplicativeCoolingSchedule.handle_alpha">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handle_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.LinearMultiplicativeCoolingSchedule.handle_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the default alpha for Linear Multiplicative cooling to 1.0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LinearMultiplicativeCoolingSchedule.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.LinearMultiplicativeCoolingSchedule.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a step in the Linear Multiplicative cooling schedule by calculating:</p>
+<div class="math notranslate nohighlight">
+\[T_k = \frac{T_0}{1 +\alpha * k}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Float representing the temperature at the next step</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LogMultiplicativeCoolingSchedule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">LogMultiplicativeCoolingSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.LogMultiplicativeCoolingSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#algorithms.evolutionary.MultiplicativeCoolingSchedule" title="algorithms.evolutionary.MultiplicativeCoolingSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">algorithms.evolutionary.MultiplicativeCoolingSchedule</span></code></a></p>
+<p>Implements the Logarithmic Multiplicative cooling schedule</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LogMultiplicativeCoolingSchedule.handle_alpha">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handle_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.LogMultiplicativeCoolingSchedule.handle_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the default alpha for Logarithmic Multiplicative Cooling to 10.0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.LogMultiplicativeCoolingSchedule.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.LogMultiplicativeCoolingSchedule.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a step in the Logarithmic Multiplicative cooling schedule by calculating:</p>
+<div class="math notranslate nohighlight">
+\[T_k = \frac{T_0}{1 +\alpha\log(1+k)}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Float representing the temperature at the next step</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.MultiplicativeCoolingSchedule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">MultiplicativeCoolingSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.MultiplicativeCoolingSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#algorithms.evolutionary.CoolingSchedule" title="algorithms.evolutionary.CoolingSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">algorithms.evolutionary.CoolingSchedule</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for a Multiplicative cooling schedule</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.MultiplicativeCoolingSchedule.handle_alpha">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handle_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.MultiplicativeCoolingSchedule.handle_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for Multiplicative cooling schedules to set the optimal default alpha constant for the
+step computation, given that a specific alpha was not provided by the user</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Phenome">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">Phenome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.Phenome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds the name and value for a given sample of a parameter</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Phenome.param">
+<span class="sig-name descname"><span class="pre">param</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#algorithms.evolutionary.Phenome.param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Phenome.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="pre">:</span> <span class="pre">Any</span></em><a class="headerlink" href="#algorithms.evolutionary.Phenome.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Population">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">Population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">genes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.Population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A group of Genes that represent a population of an evolutionary cycle</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Population.fittest_gene">
+<span class="sig-name descname"><span class="pre">fittest_gene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a></span></span><a class="headerlink" href="#algorithms.evolutionary.Population.fittest_gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the fittest Gene by evaluating all Genes in the population with the provided reward function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – The reward function used to evaluate the Genes’ fitness, must accept the Gene’s Phenomes as inputs</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Gene that obtained the highest fitness</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Population.rank_select">
+<span class="sig-name descname"><span class="pre">rank_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#algorithms.evolutionary.Population.rank_select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the k top Genes from the population based on their fitness value obtained from the reward function</p>
+<p>OUTPUT GENES MUST BE SORTED IN DESCENDING ORDER LIKE RANK SELECT OR THE ELITIST SELECTION WILL FAIL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The reward function used to evaluate the Genes’ fitness, must accept the Gene’s Phenomes as inputs</p></li>
+<li><p><strong>k</strong> – The number of top Genes to select</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An np.ndarray of the top k Genes sorted by their evaluated fitness (descending order)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Population.roulette_select">
+<span class="sig-name descname"><span class="pre">roulette_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#algorithms.evolutionary.Population.roulette_select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects k Genes from population roulette style, in which each Gene has a probability of being chosen
+proportional to its relative fitness score among the Gene population</p>
+<p>OUTPUT GENES MUST BE SORTED IN DESCENDING ORDER LIKE RANK SELECT OR THE ELITIST SELECTION WILL FAIL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The reward function used to evaluate the Genes’ fitness, must accept the Gene’s Phenomes as inputs</p></li>
+<li><p><strong>k</strong> – The number of Genes to select</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An np.ndarray of the k selected Genes sorted by their evaluated fitness (descending order)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.Population.update_population">
+<span class="sig-name descname"><span class="pre">update_population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">genes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#algorithms.evolutionary.Gene" title="algorithms.evolutionary.Gene"><span class="pre">algorithms.evolutionary.Gene</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.Population.update_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the current population by replace the list of Genes</p>
+<p>Performs validation on the new genes to ensure the Population is being updated rather than altered</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>genes</strong> – List of Genes representing the updated population</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="algorithms.evolutionary.QuadraticMultiplicativeCoolingSchedule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">QuadraticMultiplicativeCoolingSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#algorithms.evolutionary.QuadraticMultiplicativeCoolingSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#algorithms.evolutionary.MultiplicativeCoolingSchedule" title="algorithms.evolutionary.MultiplicativeCoolingSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">algorithms.evolutionary.MultiplicativeCoolingSchedule</span></code></a></p>
+<p>Implements the Quadratic Multiplicative cooling schedule</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.QuadraticMultiplicativeCoolingSchedule.handle_alpha">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handle_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.QuadraticMultiplicativeCoolingSchedule.handle_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the default alpha for Quadratic Multiplicative Cooling to 1.0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="algorithms.evolutionary.QuadraticMultiplicativeCoolingSchedule.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.QuadraticMultiplicativeCoolingSchedule.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a step in the Quadratic Multiplicative cooling schedule by calculating:</p>
+<div class="math notranslate nohighlight">
+\[T_k = \frac{T_0}{1 +\alpha * k^2}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Float representing the temperature at the next step</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="algorithms.evolutionary.genetic_algorithm">
+<span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">genetic_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampler</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">blackboxopt.space.SearchSpaceSampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">purge_rate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.3333333333333333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crossover_rate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.3333333333333333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_rate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.3333333333333333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_probability</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elitist_rate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_crossover</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">rank</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">roulette</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'rank'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#algorithms.evolutionary.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs general genetic algorithm to optimize the parameters of a provided blackbox function with many options
+for adjusting the algorithm’s selection and mutation methods</p>
+<p>Implementation strongly relates to: <a class="reference external" href="https://en.wikipedia.org/wiki/Genetic_algorithm#Methodology">https://en.wikipedia.org/wiki/Genetic_algorithm#Methodology</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The blackbox function being optimized for, must accept the inputs from the SearchSpaceSampler</p></li>
+<li><p><strong>sampler</strong> – A SearchSpaceSampler used to generate parameter samples for the blackbox function</p></li>
+<li><p><strong>maximize</strong> – Flag signalling if the function is being maximized or minimized, default True: maximized</p></li>
+<li><p><strong>pop_size</strong> – The total size of the population at each generation</p></li>
+<li><p><strong>generations</strong> – The number of generations to simulate</p></li>
+<li><p><strong>purge_rate</strong> – The percentage of Genes to remove in each generation</p></li>
+<li><p><strong>crossover_rate</strong> – The percentage of Genes to be populated by crossover of the remaining Genes in each generation</p></li>
+<li><p><strong>mutation_rate</strong> – The percentage of Genes to be populated by mutating the remaining Genes in each generation</p></li>
+<li><p><strong>mutation_probability</strong> – The probability to use for mutation when performing Gene mutation, default 0.50</p></li>
+<li><p><strong>elitist_rate</strong> – The percentage of top remaining Genes to explicitly keep in the next Generation, default 0.00</p></li>
+<li><p><strong>k_crossover</strong> – When performing crossover, k_crossover specifies how many splits to use, default 1</p></li>
+<li><p><strong>select_method</strong> – The method of selection to use when purging the population, currently supports “rank” select and
+“roulette” select</p></li>
+<li><p><strong>progress</strong> – Flag to enable or disable the progress bar when running the simulation. default True, enabled</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the best parameters and values contained in the final population of the genetic algorithm</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="algorithms.evolutionary.kirkpatrick_acceptance">
+<span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">kirkpatrick_acceptance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_energy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_energy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#algorithms.evolutionary.kirkpatrick_acceptance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kirkpatrick acceptance probability formula, reversed for maximization instead of minimization</p>
+<p>Switching states is guaranteed if the new energy is greater than the old energy, otherwise the state change
+probability is computed such that:</p>
+<div class="math notranslate nohighlight">
+\[p = \exp(-(E_old - E_new) / t)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>old_energy</strong> – Float representing the energy in the current state</p></li>
+<li><p><strong>new_energy</strong> – Float representing the energy in the new state</p></li>
+<li><p><strong>temperature</strong> – Float representing the temperature of the current state</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Float representing the computed probability of a state change</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="algorithms.evolutionary.random_restart_hill_climbing">
+<span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">random_restart_hill_climbing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampler</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">blackboxopt.space.Space</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restart_probability</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#algorithms.evolutionary.random_restart_hill_climbing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements random restart hill climbing which is similar to stochastic hill climbing, except there is some random
+probability, <cite>restart_probability</cite>, that the stochastic process will restart on each iteration. This helps avoid
+local maxima by restarting the search from different positions and keeping track of the highest point found so far</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The blackbox function being optimized for, must accept the inputs from the SearchSpaceSampler</p></li>
+<li><p><strong>sampler</strong> – A SearchSpaceSampler used to generate parameter samples for the blackbox function</p></li>
+<li><p><strong>maximize</strong> – Flag signalling if the function is being maximized or minimized, default True: maximized</p></li>
+<li><p><strong>steps</strong> – The total number of steps to take in the stochastic process</p></li>
+<li><p><strong>restart_probability</strong> – The probability that the stochastic process is restarted on each iteration</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the best parameters and values contained in the final iteration of random restart hill climbing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="algorithms.evolutionary.simulated_annealing_algorithm">
+<span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">simulated_annealing_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func:</span> <span class="pre">Callable[[...],</span> <span class="pre">float],</span> <span class="pre">sampler:</span> <span class="pre">blackboxopt.space.SearchSpaceSampler,</span> <span class="pre">maximize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">initial_temperature:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">100.0,</span> <span class="pre">steps:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1000,</span> <span class="pre">cooling_schedule:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'linear',</span> <span class="pre">acceptance_probability_func:</span> <span class="pre">Callable[[float,</span> <span class="pre">float,</span> <span class="pre">float],</span> <span class="pre">float]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">kirkpatrick_acceptance&gt;,</span> <span class="pre">**cooling_schedule_kwargs</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#algorithms.evolutionary.simulated_annealing_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the simulated annealing algorithm for optimizing the function parameters of a given search space</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The blackbox function being optimized for, must accept the inputs from the SearchSpaceSampler</p></li>
+<li><p><strong>sampler</strong> – A SearchSpaceSampler used to generate parameter samples for the blackbox function</p></li>
+<li><p><strong>maximize</strong> – Flag signalling if the function is being maximized or minimized, default True: maximized</p></li>
+<li><p><strong>initial_temperature</strong> – The starting temperature for the cooling schedule</p></li>
+<li><p><strong>steps</strong> – The total number of steps in the cooling schedule</p></li>
+<li><p><strong>cooling_schedule</strong> – Name of the cooling schedule algorithm to use, currently supports: linear,
+exponential_multiplicative, linear_multiplicative, and quadratic_multiplicative</p></li>
+<li><p><strong>acceptance_probability_func</strong> – Function that takes 3 floats as input (old energy, new energy, and temperature) as
+inputs, and returns the probability, [0, 1], of switching to the new state. By
+default this uses kirkpatrick_acceptance</p></li>
+<li><p><strong>**cooling_schedule_kwargs</strong> – Additional keyword arguments to pass to the cooling schedule algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the best parameters and values contained in the final iteration of the simulated annealing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="algorithms.evolutionary.stochastic_hill_climbing">
+<span class="sig-prename descclassname"><span class="pre">algorithms.evolutionary.</span></span><span class="sig-name descname"><span class="pre">stochastic_hill_climbing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampler</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">blackboxopt.space.SearchSpaceSampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#algorithms.evolutionary.stochastic_hill_climbing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements stochastic hill climbing algorithm for optimizing the function parameters of a given search space</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The blackbox function being optimized for, must accept the inputs from the SearchSpaceSampler</p></li>
+<li><p><strong>sampler</strong> – A SearchSpaceSampler used to generate parameter samples for the blackbox function</p></li>
+<li><p><strong>maximize</strong> – Flag signalling if the function is being maximized or minimized, default True: maximized</p></li>
+<li><p><strong>steps</strong> – The total number of steps to take in the stochastic process</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the best parameters and values contained in the final iteration of the stochastic hill climbing</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Ryan Downing.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>
