@@ -1,5 +1,6 @@
 """Space module implements the abstract search space representation that is used in the optimization algorithms.
 Provides functionality for sampling from the search space and creating dependency relationships between parameters."""
+import math
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, Iterable, Optional, Set, Tuple, TypeVar
 
@@ -53,11 +54,11 @@ class RandInt(Space):
             high: integer representing the upper bound of the space
         """
         if high is None:
-            self.low = 0
-            self.high = low
+            self.low, self.high = 0, low
         else:
-            self.low = low
-            self.high = high
+            self.low, self.high = low, high
+        assert self.low <= self.high, f"low cannot be greater than high for the sample range, " \
+                                      f"got {self.low=} and {self.high=}"
 
     def sample(self, *args, **kwargs):
         """Generates a random integer within the specified range by using numpy's Generator.integers"""
@@ -74,11 +75,11 @@ class RandFloat(Space):
             high: float representing the upper bound of the space
         """
         if high is None:
-            self.low = 0.0
-            self.high = low
+            self.low, self.high = 0.0, low
         else:
-            self.low = low
-            self.high = high
+            self.low, self.high = low, high
+        assert self.low <= self.high, f"low cannot be greater than high for the sample range, " \
+                                      f"got {self.low=} and {self.high=}"
 
     def sample(self, *args, **kwargs):
         """Generates a random (uniform) float within the specified range by using numpy's Generator.uniform"""
@@ -86,8 +87,8 @@ class RandFloat(Space):
 
 
 class RandLogUniform(RandFloat):
-    """Search space for a random float within the given base-10 range (inclusive), log is then applied to the sample,
-     default is natural log
+    """Search space for a random float where the range was transformed to log space, sample is drawn from the log space
+    and the base is applied with the sample as exponent
     """
 
     def __init__(
@@ -99,16 +100,24 @@ class RandLogUniform(RandFloat):
             high: float representing the upper bound of the space (before applying base)
             base: float representing the log base to apply to the sample, default natural log
         """
+        if high is None:
+            low, high = base, low
         super().__init__(low, high)
+        assert self.low > 0, f"low must be greater than 0 for RandLogUniform, got {low}"
+        assert self.high > 0, f"high must be greater than 0 for RandLogUniform, got {high}"
         self.base = base
-        self._log_base = np.log(base)
+        self.log_low = math.log(self.low, base)
+        self.log_high = math.log(self.high, base)
 
     def sample(self, *args, **kwargs):
-        """Generates a random float sample with numpy's Generator.uniform and applies log base"""
-        return np.log(super().sample()) / self._log_base
+        """Generates a random float sample with numpy's Generator.uniform and applies base with sample as exponent"""
+        return self.base**rng.uniform(self.log_low, self.log_high)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(low={self.low}, high={self.high}, base={self.base})"
 
 
-class Discrete(Space):
+class RandDiscrete(Space):
     """Search space for a random discrete value"""
 
     def __init__(self, choices: Iterable[Any]):
